@@ -6,6 +6,8 @@ type Props = {
   current: CurrentWeather;
   /** 今日の降水確率（3時間予報の最大値） */
   pop: number | null;
+  isFavorite: boolean;
+  onToggleFavorite: () => void;
 };
 
 function Stat({ label, value }: { label: string; value: string }) {
@@ -17,7 +19,13 @@ function Stat({ label, value }: { label: string; value: string }) {
   );
 }
 
-export default function CurrentCard({ location, current, pop }: Props) {
+export default function CurrentCard({
+  location,
+  current,
+  pop,
+  isFavorite,
+  onToggleFavorite,
+}: Props) {
   return (
     <section className="rounded-3xl border border-white/20 bg-white/10 p-6 backdrop-blur-md">
       <div className="flex items-baseline gap-2">
@@ -25,6 +33,22 @@ export default function CurrentCard({ location, current, pop }: Props) {
         {location.country && (
           <span className="text-sm text-white/70">{location.country}</span>
         )}
+        <button
+          type="button"
+          onClick={onToggleFavorite}
+          aria-pressed={isFavorite}
+          aria-label={
+            isFavorite ? "お気に入りから外す" : "お気に入りに追加する"
+          }
+          title={isFavorite ? "お気に入りから外す" : "お気に入りに追加する"}
+          className={`ml-auto rounded-full border px-2.5 py-1 text-sm transition ${
+            isFavorite
+              ? "border-amber-200/60 bg-amber-300/25 text-amber-100"
+              : "border-white/30 bg-white/10 text-white/60 hover:bg-white/25 hover:text-white"
+          }`}
+        >
+          {isFavorite ? "★" : "☆"}
+        </button>
       </div>
       <p className="mt-0.5 text-xs text-white/60">
         現地時刻 {current.timeLabel} 時点

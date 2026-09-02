@@ -1,4 +1,5 @@
 import type { DayForecast } from "@/lib/types";
+import HourlyChart from "./HourlyChart";
 import WeatherIcon from "./WeatherIcon";
 
 type Props = {
@@ -40,7 +41,15 @@ export default function DayDetail({ day, isToday }: Props) {
         </div>
       </div>
 
-      <div className="mt-4 overflow-x-auto">
+      <div className="mt-4">
+        <HourlyChart slots={day.slots} />
+      </div>
+
+      <details className="mt-4">
+        <summary className="inline-block cursor-pointer rounded-full border border-white/25 bg-white/10 px-4 py-1.5 text-xs transition hover:bg-white/25">
+          3時間ごとの数値を表で見る
+        </summary>
+        <div className="mt-3 overflow-x-auto">
         <table className="w-full min-w-[420px] text-sm">
           <thead>
             <tr className="text-left text-[11px] uppercase text-white/60">
@@ -80,7 +89,8 @@ export default function DayDetail({ day, isToday }: Props) {
             ))}
           </tbody>
         </table>
-      </div>
+        </div>
+      </details>
 
       {isToday && day.slots.length < 8 && (
         <p className="mt-3 text-[11px] text-white/60">

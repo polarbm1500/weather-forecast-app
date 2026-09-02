@@ -1,6 +1,7 @@
 "use client";
 
 import { useState } from "react";
+import { favoriteKey, type Favorite } from "@/lib/favorites";
 
 const QUICK_CITIES = ["東京", "大阪", "札幌", "名古屋", "福岡", "那覇", "London"];
 
@@ -9,6 +10,9 @@ type Props = {
   onLocate: () => void;
   loading: boolean;
   locating: boolean;
+  favorites: Favorite[];
+  onSelectFavorite: (fav: Favorite) => void;
+  onRemoveFavorite: (fav: Favorite) => void;
 };
 
 export default function SearchBar({
@@ -16,6 +20,9 @@ export default function SearchBar({
   onLocate,
   loading,
   locating,
+  favorites,
+  onSelectFavorite,
+  onRemoveFavorite,
 }: Props) {
   const [value, setValue] = useState("");
 
@@ -53,6 +60,35 @@ export default function SearchBar({
           {locating ? "取得中…" : "現在地"}
         </button>
       </form>
+
+      {favorites.length > 0 && (
+        <div className="flex flex-wrap items-center gap-2">
+          <span className="text-xs text-white/60">★ お気に入り</span>
+          {favorites.map((fav) => (
+            <span
+              key={favoriteKey(fav)}
+              className="flex items-center rounded-full border border-white/35 bg-white/20 text-xs"
+            >
+              <button
+                type="button"
+                onClick={() => onSelectFavorite(fav)}
+                disabled={loading}
+                className="py-1 pr-1 pl-3 transition enabled:hover:text-white disabled:opacity-40"
+              >
+                {fav.name}
+              </button>
+              <button
+                type="button"
+                onClick={() => onRemoveFavorite(fav)}
+                aria-label={`${fav.name}をお気に入りから外す`}
+                className="px-2 py-1 text-white/60 transition hover:text-white"
+              >
+                ×
+              </button>
+            </span>
+          ))}
+        </div>
+      )}
 
       <div className="flex flex-wrap gap-2">
         {QUICK_CITIES.map((city) => (
