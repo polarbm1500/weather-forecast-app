@@ -42,3 +42,7 @@ next-env.d.ts
 
 # env の見本だけはコミットする
 !.env.example
+
+# Next.js 16 が自動生成する AI エージェント向けの注意書き
+AGENTS.md
+CLAUDE.md
